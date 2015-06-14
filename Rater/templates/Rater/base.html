@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+    .nav a {
+      color: #5a5a5a;
+      font-size: 14px;
+      font-weight: bold;
+      padding: 14px 10px;
+      text-transform: uppercase;
+    }
+    .nav li {
+      display: inline;
+    }
+    body {
+    		margin: 50px 40px 10px 70px;
+    	}
+
+    </style>
+</head>
+<body>
+<header>
+  <div class="nav">
+    <ul>
+      <li><a href="http://alancoding.github.io/">Alan's Page</a></li>
+      <li><a href="http://alancoding.github.io/mine.html">Minesweeper</a></li>
+      <li><a href="http://alancoding.github.io/jumble.html">Word Jumble</a></li>
+      <li><a href="index.html">Index</a></li>
+      {% if request.user.is_authenticated %}
+        <li><a href="{% url 'view_logout' %}">log out</a></li>
+      {% else %}
+        <li><a href="/login/">Log in</a></li>
+        <li><a href="{% url 'view_register' %}">Create an account</a></li>
+      {% endif %}
+    </ul>
+    {% if request.user.is_authenticated %}
+    <ul>
+      <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+      <li><a href="user.html{{ request.user.rater.id }}">User: {{ request.user.username }}</a></li>
+    </ul>
+    {% endif %}
+  </div>
+</header>
+<div>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                        Important:
+                    {% endif %}
+                    {{ message }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+{% block content %}
+{% endblock %}
+<footer>
+    <strong>This is the common footer</strong>
+</footer>
+</body>
+</html>
