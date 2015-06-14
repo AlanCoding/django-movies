@@ -1,0 +1,14 @@
+{% extends "Rater/base.html" %}
+
+{% block content %}
+    <h2>All movies</h2>
+    <p>(highest scoring, reviewed by 10 or more people)</p>
+    {% for movie in movies %}
+        <div>
+            <p><a href="{% url 'view_movie' movie.id %}">{{ movie.title }}</a>
+                - average rating of
+                {{ movie.avg_rating }} stars, reviewed by
+                {{ movie.total_ratings }} users</p>
+        </div>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "Rater/base.html" %}
+
+{% block content %}
+
+    <h2>Movie: {{ movie.title }}</h2>
+    {% if request.user.is_authenticated %}
+    <p>You are logged in</p>
+      {% if user_rate %}
+        <p>You have rated this movie!</p>
+      {% else %}
+        {% if request.user.is_authenticated %}
+          <p>You have not rated this movie</p>
+          <p>
+
+            <form method="POST" action="{% url 'view_movie' movie.id %}">
+
+                  {% csrf_token %}
+              <table>
+              <tr>
+                  <td>{{ rating_form.as_p }}</td>
+              </tr>
+              </table>
+                <input type="submit" name="submit" value="Add This Rating!"/>
+            </form>
+          </p>
+        {% else %}
+          <p>Log in to rate movies</p>
+        {% endif %}
+      {% endif %}
+    {% endif %}
+    <ul>
+      <li>average score = {{ movie.avg_rating }}</li>
+      <li>has been reviewed {{ movie.total_ratings }} times</li>
+    </ul>
+    {% for star in star_hist %}
+      {{star}} <br />
+    {% endfor %}
+    <p><u>Reviews of this movie</u>
+    {% if ratings|length == 200 %}
+      (received over 200 ratings, only showing first 200)
+    {% endif %}
+    </p>
+    <ul>
+      {% for rating in ratings %}
+      <li><a href="{% url 'view_user' rating.rater.id %}">User number {{ rating.rater.id }}</a>
+            gave it {{ rating.rating }} stars</li>
+      {% endfor %}
+
+{% endblock %}

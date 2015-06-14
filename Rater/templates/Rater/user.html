@@ -1,0 +1,19 @@
+{% extends "Rater/base.html" %}
+
+{% block content %}
+    <h2>User named {{ rater.user.username }}, #{{ rater.id }}</h2>
+    <p>average score given = {{ rater.avg_rating }}</p>
+    {% for star in star_hist %}
+      {{star}} <br />
+    {% endfor %}
+    <p>user age: {{ rater.age }}</p>
+    <p>user gender: {{ rater.gender }}</p>
+    <p>user zip_code: {{ rater.zip_code }}</p>
+    <p><u>Movies reviewed by this user and the ratings</u></p>
+    <ul>
+      {% for rating in ratings %}
+      <li><a href="{% url 'view_movie' rating.movie.id %}">{{ rating.movie.title }}</a>
+            rated {{ rating.rating }} stars</li>
+      {% endfor %}
+
+{% endblock %}
