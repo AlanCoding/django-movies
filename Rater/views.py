@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 
 # Create your views here.
-from Rater.forms import UserForm, ProfileForm, RatingForm
+from Rater.forms import UserForm, RaterForm, RatingForm
 
 def view_index(request):
     return render(request, "Rater/index.html")
@@ -86,15 +86,15 @@ def view_logout(request):
 def view_register(request):
     if request.method == "GET":
         user_form = UserForm()
-        profile_form = ProfileForm()
+        rater_form = RaterForm()
     elif request.method == "POST":
         user_form = UserForm(request.POST)
-        profile_form = ProfileForm(request.POST)
-        if user_form.is_valid() and profile_form.is_valid():
+        rater_form = RaterForm(request.POST)
+        if user_form.is_valid() and rater_form.is_valid():
             user = user_form.save()
-            profile = profile_form.save(commit=False)
-            profile.user = user
-            profile.save()
+            rater = rater_form.save(commit=False)
+            rater.user = user
+            rater.save()
 
             password = user.password
             # The form doesn't know to call this special method on user.
@@ -112,7 +112,7 @@ def view_register(request):
                     user.username))
             return redirect('index.html')
     return render(request, "Rater/register.html", {'user_form': user_form,
-                                                   'profile_form': profile_form})
+                                                   'rater_form': rater_form})
 
 # from class
 # def all_movies(request):

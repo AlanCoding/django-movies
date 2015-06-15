@@ -10,7 +10,7 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ('username', 'email', 'password',)
 
-class ProfileForm(forms.ModelForm):
+class RaterForm(forms.ModelForm):
     class Meta:
         model = Rater
         fields = ('age', 'zip_code',)
