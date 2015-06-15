@@ -47,7 +47,7 @@ def view_movie(request, movie_id):
     else:
         rating_form = RatingForm()
         user = request.user
-        if user is not None:
+        if user.is_authenticated():
             user_rate = user.rater.has_rated(movie)
         else:
             user_rate = False
