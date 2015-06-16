@@ -6,9 +6,17 @@
       <div style="float:right"><a href="{% url 'view_user' rater.next_user %}">Next User</a></div>
       <div>&nbsp;</div>
     </p>
-    <h2>User named {{ rater.user.username }}, #{{ rater.id }}</h2>
-    <p>average score given = {{ rater.avg_rating }},
-        out of {{ rater.rating_count }} total ratings.</p>
+
+    <div class="jumbotron">
+      <h1>User {{ rater.user.username }}</h1>
+      <p>Also known as #{{ rater.id }}, {{ rater.user.username }} has rated
+          {{ rater.rating_count }} movies. I wonder if {{ rater.greeting }}
+          mouse clicking finger got tired. Ha ha. Movies subject to {{ rater.greeting }}
+          wrath received an average rating of {{ rater.avg_rating }}. What a critic!
+      </p>
+    </div>
+
+    <p>Rating histogram:</p>
     {% for star in rater.star_hist %}
       {{star}} <br />
     {% endfor %}

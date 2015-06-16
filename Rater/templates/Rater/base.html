@@ -65,6 +65,7 @@
 </nav>
 
 {% if messages %}
+  <div>
     <ul class="messages">
         {% for message in messages %}
             <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
@@ -75,13 +76,19 @@
             </li>
         {% endfor %}
     </ul>
+  </div>
 {% endif %}
+
+<div class="container theme-showcase" role="main">
 
 {% block content %}
 {% endblock %}
+</div>
 
 <footer>
+  <center>
     <strong><br />Movie Review site is for educational purposes</strong>
+  </center>
   <p>&nbsp;</p>
 </footer>
 </body>

@@ -1,23 +1,24 @@
 {% extends "Rater/base.html" %}
 
 {% block content %}
-<div>
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                        Important:
-                    {% endif %}
-                   {{ message }}
-               </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-</div>
-    <h2>This is the index page</h2>
-    <div>Top 20 movie list exists, but excluded from live version due to lag
-        view some other users:
+
+
+  <!-- Main jumbotron for a primary marketing message or call to action -->
+  <div class="jumbotron">
+    <h1>MovieLens Project</h1>
+    <p>Rate, review, create an account, edit, and delete your old reviews.
+        Make a new account, and do it all over again.
+        The world of movies is your oyster in this website for the Iron Yard's
+        Python class. Broiled in Django, sautéed in bootstraps, and given just
+        a pinch of jQuerry to taste, this will fill you up with 1 million
+        reviews.
+    </p>
+  </div>
+
+  <p>This is the index page. Top 20 movie link exists below, but you should
+      avoid it in the live version due to lage. Same goes for genres.</p>
+  <div class="page-header"><h1>View some users</h1></div>
+    <div>
       <ul>
         <li><a href="/user.html1">User number 1</a></li>
         <li><a href="/user.html10">User number 10</a></li>

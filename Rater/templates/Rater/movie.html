@@ -8,7 +8,13 @@
       <div>&nbsp;</div>
     </p>
     <h2>&nbsp;</h2>
-    <h2>Movie: {{ movie.title }}</h2>
+
+    <div class="jumbotron">
+      <h1>Movie: {{ movie.title }}</h1>
+      <p>This is the entry for this movie.
+      </p>
+    </div>
+
     {% if request.user.is_authenticated %}
     <p>You have special privledges on this page, {{ request.user.username }}.</p>
       {% if user_rate %}

@@ -67,6 +67,12 @@ class Rater(models.Model):
 
     user = models.OneToOneField(User, null=True) # added for user accounts
 
+    def greeting(self):
+        if self.gender == "M":
+            return "his"
+        else:
+            return "her"
+
     def rating_count(self):
         return self.rating_set.count()
 
@@ -78,8 +84,8 @@ class Rater(models.Model):
 
     def next_user(self):
         i = self.id + 1
-        if i > len(Rater.objects.all()) + 1:
-            i = len(Rater.objects.all()) + 1
+        if i > len(Rater.objects.all()):
+            i = len(Rater.objects.all())
         return i
 
     def avg_rating(self):

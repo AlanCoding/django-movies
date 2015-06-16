@@ -92,3 +92,4 @@ static/jquery-2.1.4.min.js
 movieratings/__pycache__/
 lib/
 Rater/__pycache__/
+*.zip
