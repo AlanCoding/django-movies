@@ -1,37 +1,17 @@
+{% load staticfiles %}
+{% load bootstrap3 %}
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-    <style>
-    .top_nav {
-      background-color: #ffe;
-    }
-    .top_nav2 {
-  		margin: 20px 20px 20px 20px;
-    }
-    .nav {
-      background-color: #eee;
-    }
-    .nav2 {
-  		margin: 10px 10px 10px 10px;
-      overflow:hidden;
-    }
-    .nav a {
-      color: #5a5a5a;
-      font-size: 14px;
-      font-weight: bold;
-      padding: 14px 10px;
-      text-transform: uppercase;
-    }
-    .nav li {
-      display: inline;
-    }
-    body {
-    		margin: 50px 40px 10px 70px;
-    	}
-
-    </style>
+  <meta charset="UTF-8">
+  <link rel="shortcut icon" href="{% static "favicon.ico" %}"/>
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  <link rel="stylesheet" href="{% static "style.css" %}"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+    <title>MovieLens rating site</title>
 </head>
 <body>
 <div class="top_nav">
@@ -78,6 +58,7 @@
 </div>
 {% block content %}
 {% endblock %}
+
 <footer>
     <strong><br />Movie Review site is for educational purposes</strong>
   <p>&nbsp;</p>

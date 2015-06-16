@@ -82,3 +82,8 @@ Rater/__pycache__/models.cpython-34.pyc
 .DS_Store
 Rater/__pycache__/*
 */__pycache__/
+
+
+static/css/
+static/js/
+static/fonts/
