@@ -26,7 +26,7 @@
         <li><a href="/user.html6044">Clinton's page</a></li>
       </ul>
     </p>
-    <p>view some movies:
+    <p>View some movies:
       <ul>
         <li><a href="/movie.html2987">Who Framed Roger Rabbit</a></li>
         <li><a href="/movie.html3421">Animal House</a></li>
@@ -34,6 +34,21 @@
         <li><a href="/movie.html2554">Children of the Damned</a></li>
       </ul>
     </p>
-    <p>there are many pages like it</p>
-    <p>but this one is the index</p>
+    <p>View genre pages with top-rated movies:
+      <ul>
+        {% for genre in genres %}
+          <li><a href="{% url 'view_genre' genre.id %}">{{ genre.text }}</a> genre </li>
+        {% endfor %}
+      </ul>
+    <p>
+      View the <a href="/top20.html">Top 20 rated movies</a>
+    </p>
+    <p>Data comes from the <a href="http://grouplens.org/datasets/movielens/">MovieLens</a>
+        dataset. You can visit <a href="https://movielens.org/">their site</a> to leave
+        your own non-commercial movie reviews.</p>
+    <p>Site was created as part of The Iron Yard Python curriculum.
+    </p>
+    <a href="http://www.djangoproject.com/">
+      <img src="https://www.djangoproject.com/m/img/badges/djangopowered126x54.gif" border="0" alt="Powered by Django." title="Powered by Django." /></a>
+
 {% endblock %}

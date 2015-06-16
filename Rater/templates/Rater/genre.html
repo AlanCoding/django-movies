@@ -1,0 +1,27 @@
+{% extends "Rater/base.html" %}
+
+{% block content %}
+
+    <p>
+      <div style="float:left"><a href="{% url 'view_genre' genre.prior_genre %}">
+          Previous genre<br />({{ genre.prior_name }})</a></div>
+      <div style="float:right"><a href="{% url 'view_genre' genre.next_genre %}">
+          Next genre<br />({{ genre.next_name }})</a></div>
+      <div>&nbsp;</div>
+    </p>
+    <h2>&nbsp;</h2>
+    <h2>Genre: {{ genre.text }}</h2>
+    <p>There are {{ genre.total_movies }} movies in this genre</p>
+
+    <h2>Top movies in genre</h2>
+    <p>(highest scoring, reviewed by 10 or more people)</p>
+    {% for movie in movies %}
+        <div>
+            <p><a href="{% url 'view_movie' movie.id %}">{{ movie.title }}</a>
+                - average rating of
+                {{ movie.avg_rating }} stars, reviewed by
+                {{ movie.total_ratings }} users</p>
+        </div>
+    {% endfor %}
+
+{% endblock %}

@@ -2,6 +2,12 @@
 
 {% block content %}
 
+    <p>
+      <div style="float:left"><a href="{% url 'view_movie' movie.prior_movie %}">Previous Movie<br />({{ movie.prior_name }})</a></div>
+      <div style="float:right"><a href="{% url 'view_movie' movie.next_movie %}">Next Movie<br />({{ movie.next_name }})</a></div>
+      <div>&nbsp;</div>
+    </p>
+    <h2>&nbsp;</h2>
     <h2>Movie: {{ movie.title }}</h2>
     {% if request.user.is_authenticated %}
     <p>You are logged in</p>
@@ -32,7 +38,13 @@
       <li>average score = {{ movie.avg_rating }}</li>
       <li>has been reviewed {{ movie.total_ratings }} times</li>
     </ul>
-    {% for star in star_hist %}
+    <p>Genres:</p>
+    <ul>
+      {% for gen in movie.genre.all %}
+        <li>{{ gen.text }}</li>
+      {% endfor %}
+    </ul>
+    {% for star in movie.star_hist %}
       {{star}} <br />
     {% endfor %}
     <p><u>Reviews of this movie</u>
@@ -43,7 +55,7 @@
     <ul>
       {% for rating in ratings %}
       <li><a href="{% url 'view_user' rating.rater.id %}">User number {{ rating.rater.id }}</a>
-            gave it {{ rating.rating }} stars</li>
+            gave it {{ rating.rating }} stars, at {{ rating.print_date }}</li>
       {% endfor %}
 
 {% endblock %}

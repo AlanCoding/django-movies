@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 
 # Create your views here.
 from django.db.models import Count, Avg
-from .models import Movie, Rater, Rating
+from .models import Movie, Rater, Rating, Genre
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 
@@ -11,7 +11,7 @@ from django.contrib import messages
 from Rater.forms import UserForm, RaterForm, RatingForm
 
 def view_index(request):
-    return render(request, "Rater/index.html")
+    return render(request, "Rater/index.html", {"genres": Genre.objects.all()})
 
 def view_top20_movies(request):
     big_movies = Movie.objects.annotate(num_ratings=Count('rating')).filter(num_ratings__gt=10)
@@ -20,16 +20,26 @@ def view_top20_movies(request):
                   "Rater/top20.html",
                   {"movies": movies})
 
+
+def view_genre(request, genre_id):
+    genre = Genre.objects.get(pk=genre_id)
+    genre_movies = genre.movie_set.all()
+    big_movies = genre_movies.annotate(num_ratings=Count('rating')).filter(num_ratings__gt=10)
+    movies = sorted(big_movies, key=lambda a: a.avg_rating(), reverse=True)[:20]
+    return render(request,
+                    "Rater/genre.html",
+                    {"genre": genre, "movies": movies})
+
 def view_user(request, rater_id):
     r = Rater.objects.get(pk=rater_id)
-    rs = r.rating_set.all()
+    rs = r.rating_set.order_by('-posted')
     return render(request,
                   "Rater/user.html",
-                  {"rater": r, "ratings": rs, "star_hist": r.star_hist() })
+                  {"rater": r, "ratings": rs })
 
 def view_movie(request, movie_id):
     movie = Movie.objects.get(pk=movie_id)
-    rs = movie.rating_set.all()[:200]
+    rs = movie.rating_set.order_by('-posted')[:200]
     if request.method == "POST":
         rating_form = RatingForm(request.POST)
         new_rating = request.POST.get('rating')
@@ -47,14 +57,14 @@ def view_movie(request, movie_id):
     else:
         rating_form = RatingForm()
         user = request.user
-        if user.is_authenticated():
+        if user is not None and user.is_authenticated():
             user_rate = user.rater.has_rated(movie)
         else:
             user_rate = False
         return render(request,
                       "Rater/movie.html",
                       {"movie": movie, "ratings": rs, "user_rate": user_rate,
-                       "rating_form": rating_form, "star_hist": movie.star_hist() })
+                       "rating_form": rating_form })
 
 
 def view_login(request):
@@ -113,19 +123,3 @@ def view_register(request):
             return redirect('index.html')
     return render(request, "Rater/register.html", {'user_form': user_form,
                                                    'rater_form': rater_form})
-
-# from class
-# def all_movies(request):
-#     top_10_movies = Movie.objects.annotate(
-#         rating_count = Count("rating"),
-#         avg_rating = Avg("rating__rating"),
-#     ).filter(rating_count__gte=10).order_by('-avg_rating')[:10]
-#     return render(request, 'movies/index.html', {'movies':top_10_movies})
-
-# def show_user(request, user_id):
-#     user = User.objects.get(pk=user_id)
-#     statuses = user.status_set.all().order_by('-posted_at')
-#     return render(request,
-#                   "updates/user.html",
-#                   {"user": user,
-#                    "statuses": statuses})

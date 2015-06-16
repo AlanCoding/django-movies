@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import Avg
 from django.contrib.auth.models import User
-#import datetime
+import datetime
 
 
 class Genre(models.Model):
@@ -9,6 +9,31 @@ class Genre(models.Model):
 
     def __str__(self):
         return self.text
+
+    def total_movies(self):
+        return len(self.movie_set.all())
+
+    def prior_genre(self):
+        i = self.id - 1
+        if i < 1:
+            i = 1
+        return i
+
+    def next_genre(self):
+        i = self.id + 1
+        if i > len(Genre.objects.all()) + 1:
+            i = len(Genre.objects.all()) + 1
+        return i
+
+    def prior_name(self):
+        i = self.prior_genre()
+        other_genre = Genre.objects.get(pk=i)
+        return other_genre.text
+
+    def next_name(self):
+        i = self.next_genre()
+        other_genre = Genre.objects.get(pk=i)
+        return other_genre.text
 
 
 class Rater(models.Model):
@@ -44,6 +69,18 @@ class Rater(models.Model):
 
     def rating_count(self):
         return self.rating_set.count()
+
+    def prior_user(self):
+        i = self.id - 1
+        if i < 1:
+            i = 1
+        return i
+
+    def next_user(self):
+        i = self.id + 1
+        if i > len(Rater.objects.all()) + 1:
+            i = len(Rater.objects.all()) + 1
+        return i
 
     def avg_rating(self):
         r_set = self.rating_set.all()
@@ -95,6 +132,28 @@ class Movie(models.Model):
     def total_ratings(self):
         return self.rating_set.count()
 
+    def prior_movie(self):
+        i = self.id - 1
+        if i < 1:
+            i = 1
+        return i
+
+    def next_movie(self):
+        i = self.id + 1
+        if i > len(Movie.objects.all()) + 1:
+            i = len(Movie.objects.all()) + 1
+        return i
+
+    def prior_name(self):
+        i = self.prior_movie()
+        other_movie = Movie.objects.get(pk=i)
+        return other_movie.title
+
+    def next_name(self):
+        i = self.next_movie()
+        other_movie = Movie.objects.get(pk=i)
+        return other_movie.title
+
     def star_hist(self):
         hist = [0 for i in range(5)]
         for r in self.rating_set.all():
@@ -126,6 +185,7 @@ class Rating(models.Model):
 #    posted = models.DateTimeField(default=None, null=True, blank=True)
     posted = models.IntegerField(default=0)
     review = models.TextField(null=True)
+    # datetime.datetime.fromtimestamp
 
     star_options = ((1,"*"), (2,"*"*2), (3,"*"*3), (4,"*"*4), (5,"*"*5))
     rating = models.IntegerField(default=1, choices=star_options)
@@ -135,6 +195,9 @@ class Rating(models.Model):
         return self.movie.title+" rated "+str(self.rating)\
                +" by #"+str(self.rater.pk)
 
+    def print_date(self):
+        return datetime.datetime.fromtimestamp(int(self.posted)).isoformat(" ")
+        #return self.posted
 
 
 def fill_users():
@@ -143,6 +206,12 @@ def fill_users():
         r.user = User.objects.create(username=uid, email="a@example.org", password="pass")
         r.user.set_password("pass")
         r.user.save()
+        r.save()
+
+def reassign_users():
+    for r in Rater.objects.all():
+        r.user = User.objects.get(pk=r.id)
+        r.save()
 
 def new_passwords():
     for r in Rater.objects.all():

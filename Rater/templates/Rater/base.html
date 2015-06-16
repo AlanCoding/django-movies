@@ -4,6 +4,19 @@
     <meta charset="UTF-8">
     <title></title>
     <style>
+    .top_nav {
+      background-color: #ffe;
+    }
+    .top_nav2 {
+  		margin: 20px 20px 20px 20px;
+    }
+    .nav {
+      background-color: #eee;
+    }
+    .nav2 {
+  		margin: 10px 10px 10px 10px;
+      overflow:hidden;
+    }
     .nav a {
       color: #5a5a5a;
       font-size: 14px;
@@ -21,8 +34,10 @@
     </style>
 </head>
 <body>
+<div class="top_nav">
 <header>
   <div class="nav">
+    <div class="nav2">
     <ul>
       <li><a href="http://alancoding.github.io/">Alan's Page</a></li>
       <li><a href="http://alancoding.github.io/mine.html">Minesweeper</a></li>
@@ -45,8 +60,9 @@
     </ul>
     {% endif %}
   </div>
+  </div>
 </header>
-<div>
+<div class="top_nav2"><div>
     {% if messages %}
         <ul class="messages">
             {% for message in messages %}
@@ -65,5 +81,6 @@
 <footer>
     <strong>This is the common footer</strong>
 </footer>
+</div></div>
 </body>
 </html>
