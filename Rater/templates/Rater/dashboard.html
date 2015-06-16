@@ -16,20 +16,25 @@
     <form method="POST" action="{% url 'view_dashboard' %}">
         {% csrf_token %}
         {{ user_form.as_p }}
-      <input type="submit" name="submit" value="Edit User Info"/>
+      <input type="submit" name="user_edit" value="Edit User Info"/>
     </form>
 
   <h2>Profile Information</h2>
     <form method="POST" action="{% url 'view_dashboard' %}">
         {% csrf_token %}
         {{ rater_form.as_p }}
-      <input type="submit" name="submit" value="Edit Profile Info"/>
+      <input type="submit" name="rater_edit" value="Edit Profile Info"/>
     </form>
 
   <h2>Review History</h2>
     <ul>
       {% for rating in user.rater.rating_set.all %}
       <li>
+        <form method="POST" action="{% url 'view_dashboard' %}" style="display:inline">
+            {% csrf_token %}
+          <input type="hidden" name="rating" value="{{ rating.id }}">
+          <input type="submit" name="delete_button" value="Delete">
+        </form>
         <a href="{% url 'view_rating' rating.id %}">Edit</a>
         <a href="{% url 'view_movie' rating.movie.id %}">{{ rating.movie.title }}</a>
             rated {{ rating.rating }} stars, left at {{ rating.print_date }}
