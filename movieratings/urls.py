@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^logout.html$', Rater_views.view_logout, name="view_logout"),
     url(r'^login.html$', Rater_views.view_login, name="view_login"),
     url(r'^genre.html(?P<genre_id>\d+)$', Rater_views.view_genre, name="view_genre"),
+    url(r'^rating.html(?P<rating_id>\d+)$', Rater_views.view_rating, name="view_rating"),
 #    url(r'^confused.html$', Rater_views.view_add_rating, name="view_add_rating"),
     url('^', include('django.contrib.auth.urls'))
 

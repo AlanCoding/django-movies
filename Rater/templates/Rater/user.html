@@ -22,8 +22,15 @@
     <p><u>Movies reviewed by this user and the ratings</u></p>
     <ul>
       {% for rating in ratings %}
-      <li><a href="{% url 'view_movie' rating.movie.id %}">{{ rating.movie.title }}</a>
-            rated {{ rating.rating }} stars, left at {{ rating.print_date }}</li>
+      <li>{% ifequal request.user.rater.id rater.id %}
+        <a href="{% url 'view_rating' rating.id %}">Edit</a>
+          {% endifequal %}
+        <a href="{% url 'view_movie' rating.movie.id %}">{{ rating.movie.title }}</a>
+            rated {{ rating.rating }} stars, left at {{ rating.print_date }}
+            {% if rating.review %}
+              , and said: {{ rating.review }}
+            {% endif %}
+            </li>
       {% endfor %}
 
 {% endblock %}

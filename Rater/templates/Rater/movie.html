@@ -54,8 +54,12 @@
     </p>
     <ul>
       {% for rating in ratings %}
-      <li><a href="{% url 'view_user' rating.rater.id %}">User number {{ rating.rater.id }}</a>
-            gave it {{ rating.rating }} stars, at {{ rating.print_date }}</li>
+      <li><a href="{% url 'view_user' rating.rater.id %}">{{ rating.rater.user.username }} (# {{ rating.rater.id }})</a>
+            gave it {{ rating.rating }} stars, at {{ rating.print_date }}
+            {% if rating.review %}
+              , and said: {{ rating.review }}
+            {% endif %}
+            </li>
       {% endfor %}
 
 {% endblock %}

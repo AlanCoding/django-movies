@@ -9,6 +9,7 @@ from django.contrib import messages
 
 # Create your views here.
 from Rater.forms import UserForm, RaterForm, RatingForm
+import datetime
 
 def view_index(request):
     return render(request, "Rater/index.html", {"genres": Genre.objects.all()})
@@ -37,14 +38,38 @@ def view_user(request, rater_id):
                   "Rater/user.html",
                   {"rater": r, "ratings": rs })
 
+def view_rating(request, rating_id):
+    rating = Rating.objects.get(pk=rating_id)
+    if request.method == "POST":
+        rating_form = RatingForm(request.POST)
+        new_rating = request.POST.get('rating')
+        new_review = request.POST.get('review')
+        rating.review = str(new_review)
+        rating.rating = int(new_rating)
+        rating.save()
+        sometext = "You have updated your rating"
+        messages.add_message(request, messages.SUCCESS, sometext)
+        return redirect('user.html'+ str(rating.rater.id))
+    else:
+        rating_form = RatingForm(initial={"rating":rating.rating,
+                                    "review":rating.review})
+        return render(request, "Rater/rating.html",
+                    {"rating": rating, "rating_form": rating_form})
+
+
+
 def view_movie(request, movie_id):
     movie = Movie.objects.get(pk=movie_id)
     rs = movie.rating_set.order_by('-posted')[:200]
     if request.method == "POST":
         rating_form = RatingForm(request.POST)
         new_rating = request.POST.get('rating')
+        new_review = request.POST.get('review')
         user = request.user
-        r = Rating(rater=user.rater, movie=movie, rating=new_rating)
+        r = Rating(rater=user.rater, movie=movie, rating=new_rating, review=new_review)
+        dt_now = datetime.datetime.now()
+        post_int = (dt_now - datetime.datetime(1970, 1, 1)).total_seconds()
+        r.posted = post_int
         r.save()
         sometext = "You have rated this movie {} stars, ".format(new_rating)
         sometext += "{}.".format(user.username)

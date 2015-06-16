@@ -75,6 +75,10 @@ db.sqlite3
 fixtures/*
 *.pyc
 **/*.pyc
+**/*.*.pyc
+**/*.*.*.pyc
 /**/*.pyc
 Rater/__pycache__/models.cpython-34.pyc
 .DS_Store
+Rater/__pycache__/*
+*/__pycache__/

@@ -21,5 +21,10 @@ with open(source_base + "ratings.dat") as infile:
             break
 
 print(" ")
-print(datetime.datetime.fromtimestamp(978229409))
+dt = datetime.datetime.fromtimestamp(978229409)
+print(dt)
 print(datetime.datetime(2000, 7, 14, 12, 30))
+print((dt - datetime.datetime(1970, 1, 1)).total_seconds())
+
+print(" ")
+print(datetime.datetime.now())

@@ -1,0 +1,18 @@
+{% extends "Rater/base.html" %}
+
+{% block content %}
+
+    <h2>User: {{ rating.rater.user.username }}'s rating of {{ rating.movie.title }}</h2>
+    {% ifequal rating.rater.user.id request.user.id %}
+      <form method="POST" action="{% url 'view_rating' rating.id %}">
+            {% csrf_token %}
+        <table>
+        <tr>
+            <td>{{ rating_form.as_p }}</td>
+        </tr>
+        </table>
+          <input type="submit" name="submit" value="Update your Rating"/>
+      </form>
+    {% endifequal %}
+
+{% endblock %}
