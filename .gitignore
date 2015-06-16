@@ -73,3 +73,8 @@ movieratings/fixtures/
 db.sqlite3
 
 fixtures/*
+*.pyc
+**/*.pyc
+/**/*.pyc
+Rater/__pycache__/models.cpython-34.pyc
+.DS_Store
