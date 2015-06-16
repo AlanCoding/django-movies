@@ -148,3 +148,30 @@ def view_register(request):
             return redirect('index.html')
     return render(request, "Rater/register.html", {'user_form': user_form,
                                                    'rater_form': rater_form})
+
+
+def view_dashboard(request):
+    user = request.user
+    rater = user.rater
+    if request.method == "GET":
+        user_form = UserForm(initial={'username':user.username, 'email':user.email})
+        rater_form = RaterForm(initial = {'age':rater.age, 'gender':rater.gender,
+                            'occupation':rater.occupation, 'zip_code':rater.zip_code})
+    elif request.method == "POST":
+        if "Edit User Info" in request.POST:
+            user_form = UserForm(request.POST)
+            if user_form.is_valid():
+                user.username = requet.POST.get('username')
+                user.email = requet.POST.get('email')
+                user.save()
+        elif "Edit Profile Info" in request.POST:
+            rater_form = RaterForm(request.POST)
+            if rater_form.is_valid():
+                rater.age = request.POST.get('age')
+                rater.gender = request.POST.get('gender')
+                rater.occupation = request.POST.get('occupation')
+                rater.zip_code = request.POST.get('zip_code')
+                rater.save()
+
+    return render(request, "Rater/dashboard.html", {'user_form': user_form,
+                                        'rater_form': rater_form})

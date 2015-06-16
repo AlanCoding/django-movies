@@ -4,7 +4,44 @@
 
 
 {% if request.user.is_authenticated %}
-<p>You are logged in</p>
-<p>menu of options:</p>
+  <p>You are logged in</p>
+  <p>menu of options:
+    <ol>
+      <li>Change your account information</li>
+      <li>Change your profile information</li>
+      <li>Edit or remove your reviews</li>
+    </ol>
+  </p>
+  <h2>Account Information</h2>
+    <form method="POST" action="{% url 'view_dashboard' %}">
+        {% csrf_token %}
+        {{ user_form.as_p }}
+      <input type="submit" name="submit" value="Edit User Info"/>
+    </form>
+
+  <h2>Profile Information</h2>
+    <form method="POST" action="{% url 'view_dashboard' %}">
+        {% csrf_token %}
+        {{ rater_form.as_p }}
+      <input type="submit" name="submit" value="Edit Profile Info"/>
+    </form>
+
+  <h2>Review History</h2>
+    <ul>
+      {% for rating in user.rater.rating_set.all %}
+      <li>
+        <a href="{% url 'view_rating' rating.id %}">Edit</a>
+        <a href="{% url 'view_movie' rating.movie.id %}">{{ rating.movie.title }}</a>
+            rated {{ rating.rating }} stars, left at {{ rating.print_date }}
+            {% if rating.review %}
+              , and said: {{ rating.review }}
+            {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+
+{% else %}
+  <p>You must be logged in to edit your account</p>
+{% endif %}
 
 {% endblock %}
