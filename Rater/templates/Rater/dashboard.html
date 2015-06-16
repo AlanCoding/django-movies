@@ -4,8 +4,8 @@
 
 
 {% if request.user.is_authenticated %}
-  <p>You are logged in</p>
-  <p>menu of options:
+  <p>You have special privledges on this page, {{ request.user.username }}.</p>
+  <p>Menu of options:
     <ol>
       <li>Change your account information</li>
       <li>Change your profile information</li>

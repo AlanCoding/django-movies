@@ -10,7 +10,7 @@
     <h2>&nbsp;</h2>
     <h2>Movie: {{ movie.title }}</h2>
     {% if request.user.is_authenticated %}
-    <p>You are logged in</p>
+    <p>You have special privledges on this page, {{ request.user.username }}.</p>
       {% if user_rate %}
         <p>You have rated this movie!</p>
       {% else %}
@@ -20,7 +20,7 @@
 
             <form method="POST" action="{% url 'view_movie' movie.id %}">
 
-                  {% csrf_token %}
+                {% csrf_token %}
               <table>
               <tr>
                   <td>{{ rating_form.as_p }}</td>
@@ -41,7 +41,7 @@
     <p>Genres:</p>
     <ul>
       {% for gen in movie.genre.all %}
-        <li>{{ gen.text }}</li>
+        <li><a href="{% url 'view_genre' gen.id %}">{{ gen.text }}</a></li>
       {% endfor %}
     </ul>
     {% for star in movie.star_hist %}

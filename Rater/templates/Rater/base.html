@@ -4,58 +4,79 @@
 <html>
 <head lang="en">
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="shortcut icon" href="{% static "favicon.ico" %}"/>
   {% bootstrap_css %}
   {% bootstrap_javascript %}
+  {% bootstrap_messages %}
   <link rel="stylesheet" href="{% static "style.css" %}"/>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <link href="css/bootstrap.min.css" rel="stylesheet">
     <title>MovieLens rating site</title>
 </head>
 <body>
-<div class="top_nav">
-<header>
-  <div class="nav">
-    <div class="nav2">
-    <ul>
-      <li><a href="http://alancoding.github.io/">Alan's Page</a></li>
-      <li><a href="http://alancoding.github.io/mine.html">Minesweeper</a></li>
-      <li><a href="http://alancoding.github.io/jumble.html">Word Jumble</a></li>
-      <li><a href="index.html">Index</a></li>
-      {% if request.user.is_authenticated %}
-        <li><a href="{% url 'view_logout' %}">log out</a></li>
-      {% else %}
-        <li><a href="/login/">Log in</a></li>
-        <li><a href="{% url 'view_register' %}">Create an account</a></li>
-      {% endif %}
-    </ul>
-    {% if request.user.is_authenticated %}
-    <ul>
-      <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
-      <li><a href="user.html{{ request.user.rater.id }}">User: {{ request.user.username }}</a></li>
-      <li><a href="dashboard.html">Dashboard</a></li>
-    </ul>
-    {% endif %}
+
+
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Movie Ratings</a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+
+
+        {% if request.user.is_authenticated %}
+          <li><a href="user.html{{ request.user.rater.id }}">User: {{ request.user.username }}</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="{% url 'view_logout' %}">log out</a></li>
+        {% else %}
+          <li><a href="/login/">Log in</a></li>
+          <li><a href="{% url 'view_register' %}">Create an account</a></li>
+        {% endif %}
+
+
+        <li role="separator" class="divider"></li>
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Alan's Work<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+
+            <li><a href="http://alancoding.github.io/">Alan's Page</a></li>
+
+            <li role="separator" class="divider"></li>
+            <li class="dropdown-header">More to play with</li>
+            <li><a href="http://alancoding.github.io/mine.html">Minesweeper</a></li>
+            <li><a href="http://alancoding.github.io/jumble.html">Word Jumble</a></li>
+          </ul>
+        </li>
+
+
+
+      </ul>
+    </div><!--/.nav-collapse -->
   </div>
-  </div>
-</header>
-<div class="top_nav2"><div>
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                        Important:
-                    {% endif %}
-                    {{ message }}
-                </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-</div>
+</nav>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    Important:
+                {% endif %}
+                {{ message }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
 {% block content %}
 {% endblock %}
 
@@ -63,6 +84,5 @@
     <strong><br />Movie Review site is for educational purposes</strong>
   <p>&nbsp;</p>
 </footer>
-</div></div>
 </body>
 </html>

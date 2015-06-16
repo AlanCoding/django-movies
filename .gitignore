@@ -87,3 +87,6 @@ Rater/__pycache__/*
 static/css/
 static/js/
 static/fonts/
+static/bootstrap/
+static/jquery-2.1.4.min.js
+movieratings/__pycache__/

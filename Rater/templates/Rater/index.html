@@ -16,7 +16,7 @@
     {% endif %}
 </div>
     <h2>This is the index page</h2>
-    <p>Top 20 movie list exists, but excluded from live version due to lag
+    <div>Top 20 movie list exists, but excluded from live version due to lag
         view some other users:
       <ul>
         <li><a href="/user.html1">User number 1</a></li>
@@ -25,27 +25,29 @@
         <li><a href="/user.html111">User number 111</a></li>
         <li><a href="/user.html6044">Clinton's page</a></li>
       </ul>
-    </p>
-    <p>View some movies:
+    </div>
+    <div>View some movies:
       <ul>
         <li><a href="/movie.html2987">Who Framed Roger Rabbit</a></li>
         <li><a href="/movie.html3421">Animal House</a></li>
         <li><a href="/movie.html2124">The Addams Family</a></li>
         <li><a href="/movie.html2554">Children of the Damned</a></li>
       </ul>
-    </p>
-    <p>View genre pages with top-rated movies:
+    </div>
+    <div>View genre pages with top-rated movies:
       <ul>
         {% for genre in genres %}
           <li><a href="{% url 'view_genre' genre.id %}">{{ genre.text }}</a> genre </li>
         {% endfor %}
       </ul>
+    </div>
     <p>
       View the <a href="/top20.html">Top 20 rated movies</a>
     </p>
     <p>Data comes from the <a href="http://grouplens.org/datasets/movielens/">MovieLens</a>
         dataset. You can visit <a href="https://movielens.org/">their site</a> to leave
-        your own non-commercial movie reviews.</p>
+        your own non-commercial movie reviews.
+    </p>
     <p>Site was created as part of The Iron Yard Python curriculum.
     </p>
     <a href="http://www.djangoproject.com/">
