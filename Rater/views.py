@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response
 from django.core.urlresolvers import reverse
+from django.template import RequestContext
 
 # Create your views here.
 from django.db.models import Count, Avg
@@ -10,6 +11,21 @@ from django.contrib import messages
 # Create your views here.
 from Rater.forms import UserForm, RaterForm, RatingForm
 import datetime
+
+
+def handler404(request):
+    response = render_to_response('Rater/404.html', {},
+                                  context_instance=RequestContext(request))
+    response.status_code = 404
+    return response
+
+
+def handler500(request):
+    response = render_to_response('Rater/500.html', {},
+                                  context_instance=RequestContext(request))
+    response.status_code = 500
+    return response
+
 
 def view_index(request):
     return render(request, "Rater/index.html", {"genres": Genre.objects.all()})

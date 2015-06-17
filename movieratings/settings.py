@@ -23,9 +23,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'v+0(u(5a4-_!$*q%z))h8#0iyrnioe8179dvkvl=bmd0(063y$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+TEMPLATE_DEBUG = False # comment out if not in production
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.herokuapp.com','.127.0.0.1']
 
 
 # Application definition
@@ -149,3 +150,7 @@ BOOTSTRAP3 = {
     # Include jQuery with Bootstrap JavaScript (affects django-bootstrap3 template tags)
     'include_jquery': True,
 }
+
+ADMINS = (
+    ('Alan Rominger', 'alan.rominger@gmail.com')
+)

@@ -17,6 +17,8 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from Rater import views as Rater_views
 
+handler404 = 'Rater.views.handler404'
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^index.html$', Rater_views.view_index, name="view_index"),
