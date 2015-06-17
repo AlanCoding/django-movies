@@ -83,10 +83,29 @@ WSGI_APPLICATION = 'movieratings.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'pdb',
+        'USER': 'pdb',
+        'HOST': '127.0.0.1'
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    },
 }
+
+
+# Database
+# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
+
+# To create PostgreSQL db:
+# > createuser mowdie
+# > createdb -U mowdie mowdie
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'mowdie',
+#         'USER': 'mowdie',
+#         'HOST': '127.0.0.1',
+#     },
+# }
 
 
 # Internationalization
