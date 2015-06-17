@@ -1,5 +1,4 @@
 venv/
-
 # Created by https://www.gitignore.io
 
 ### Python ###
@@ -93,3 +92,5 @@ movieratings/__pycache__/
 lib/
 Rater/__pycache__/
 *.zip
+*.sqlite
+*.sqlite3
