@@ -39,6 +39,9 @@
         {% endif %}
       {% endif %}
     {% endif %}
+
+    <div class="page-header"><h2>Stats</h2></div>
+
     <ul>
       <li>average score = {{ movie.avg_rating }}</li>
       <li>has been reviewed {{ movie.total_ratings }} times</li>
@@ -49,11 +52,18 @@
         <li><a href="{% url 'view_genre' gen.id %}">{{ gen.text }}</a></li>
       {% endfor %}
     </ul>
-    {% for star in movie.star_hist %}
-      {{star}} <br />
+
+    <p>Histogram of ratings recieved:</p>
+    {% for n_star in movie.star_numbs %}
+    <div style="float:left;width:50px;">&nbsp;{{ n_star.text }}</div>
+
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" aria-valuenow="{{ n_star.val }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ n_star.val }}%;"><span class="sr-only">{{ n_star }}</span></div>
+    </div>
     {% endfor %}
 
-    <h2>Reviews of this movie</h2>
+    <div class="page-header"><h2>Reviews of {{ movie.title }}</h2></div>
+
     <p>{% if ratings|length == 200 %}
       (received over 200 ratings, only showing first 200)
     {% endif %}</p>

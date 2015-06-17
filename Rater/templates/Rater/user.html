@@ -16,10 +16,15 @@
       </p>
     </div>
 
-    <p>Rating histogram:</p>
-    {% for star in rater.star_hist %}
-      {{star}} <br />
+    <div class="page-header"><h2>Rating Histogram</h2></div>
+
+    {% for n_star in rater.star_numbs %}
+    <div style="float:left;width:100px;">&nbsp;{{ n_star.text }}</div>
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" aria-valuenow="{{ n_star.val }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ n_star.val }}%;"><span class="sr-only">{{ n_star }}</span></div>
+    </div>
     {% endfor %}
+
     <p>Stats on user</p>
     <ul>
       <li>age: {{ rater.age }}</li>
@@ -27,8 +32,9 @@
       <li>occupation: {{ rater.get_occupation_display }}</li>
       <li>zip_code: {{ rater.zip_code }}</li>
     </ul>
-    <p><u>Movies reviewed by this user and the ratings</u></p>
-    
+
+    <div class="page-header"><h2>Rating History</h2></div>
+
     <table class="table table-striped">
       <thead>
         <tr>

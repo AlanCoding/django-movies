@@ -4,6 +4,14 @@ from django.contrib.auth.models import User
 import datetime
 
 
+class ProgBar:
+    text = ""
+    val = 0
+    def __init__(self, text, val):
+        self.text = text
+        self.val = val
+
+
 class Genre(models.Model):
     text = models.CharField(default="", max_length=300)
 
@@ -123,6 +131,22 @@ class Rater(models.Model):
         return s
 
 
+    def star_numbs(self):
+        hist = [0 for i in range(5)]
+        for r in self.rating_set.all():
+            hist[r.rating-1] += 1
+        star_max = 100
+        if max(hist) > star_max:
+            h_max = max(hist)
+            for i in range(5):
+                hist[i] = int(star_max*hist[i]/h_max)
+        ret_prog = [None for i in range(5)]
+        for i in range(5):
+            in_text = " " + "*"*(i+1)
+            ret_prog[i] = ProgBar(text=in_text, val=hist[i])
+        return ret_prog
+
+
     def __str__(self):
         return "user #"+str(self.pk).ljust(5)+" with "+\
                 str(self.rating_set.count())+" reviews"
@@ -179,6 +203,22 @@ class Movie(models.Model):
         for i in range(5):
             s[i] = str(i+1)+" star: "+"#"*hist[i]
         return s
+
+
+    def star_numbs(self):
+        hist = [0 for i in range(5)]
+        for r in self.rating_set.all():
+            hist[r.rating-1] += 1
+        star_max = 100
+        if max(hist) > star_max:
+            h_max = max(hist)
+            for i in range(5):
+                hist[i] = int(star_max*hist[i]/h_max)
+        ret_prog = [None for i in range(5)]
+        for i in range(5):
+            in_text = " " + "*"*(i+1)
+            ret_prog[i] = ProgBar(text=in_text, val=hist[i])
+        return ret_prog
 
     def list_of_raters(self):
         s = ""
