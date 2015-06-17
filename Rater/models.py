@@ -14,6 +14,8 @@ class ProgBar:
 
 class Genre(models.Model):
     text = models.CharField(default="", max_length=300)
+    Nratings_save = models.IntegerField(null=True)
+    Nmovies_save = models.IntegerField(null=True)
 
     def __str__(self):
         return self.text
@@ -156,6 +158,8 @@ class Movie(models.Model):
     title = models.CharField(max_length=200, default="unknown")
     release_date = models.IntegerField(default=1990)
     genre = models.ManyToManyField(Genre)
+    avg_save = models.FloatField(null=True)
+    total_save = models.IntegerField(null=True)
 
     def avg_rating(self):
         r_set = self.rating_set.all()
@@ -260,12 +264,19 @@ def fill_users():
         r.user.save()
         r.save()
 
-def reassign_users():
-    for r in Rater.objects.all():
-        r.user = User.objects.get(pk=r.id)
-        r.save()
-
-def new_passwords():
-    for r in Rater.objects.all():
-        r.user.set_password("pass")
-        r.user.save()
+def update_custom_cache():
+    print('filling movie values...')
+    for m in Movie.objects.all():
+        m.avg_save = m.avg_rating()
+        #print(' - rating avg finished')
+        m.total_save = m.total_ratings()
+        #print(' - rating total finished')
+        m.save()
+    print('filling genre values...')
+    for g in Genre.objects.all():
+        g.Nmovies_save = g.total_movies()
+        #print(' - total movies finished')
+        g.Nratings_save = g.total_ratings()
+        #print(' - total ratings finished')
+        g.save()
+    print('finished')

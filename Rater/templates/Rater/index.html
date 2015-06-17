@@ -14,6 +14,13 @@
     </p>
   </div>
 
+  <p>This is a web application that uses a variety of tools. It has a locally
+      hosted copy of <a href="http://getbootstrap.com/">bootstrap</a> and
+      <a href="https://jquery.com/download/">jQuerry</a>.
+      It also uses a <a href="http://www.postgresql.org/">PostgreSQL</a> database.
+      Whether or not you are looking at that version right now, it has
+      been test-deployed on <a href="https://www.heroku.com/">Heroku</a>.</p>
+
   <p>This is the index page. Top 20 movie link exists below, but you should
       avoid it in the live version due to lage. Same goes for genres.</p>
   <div class="page-header"><h2>View some users</h2></div>
@@ -52,8 +59,8 @@
           {% for genre in genres %}
           <tr>
             <td><a href="{% url 'view_genre' genre.id %}">{{ genre.text }}</a></td>
-            <td>{{ genre.total_movies }}</td>
-            <td>{{ genre.total_ratings }}</td>
+            <td>{{ genre.Nratings_save }}</td>
+            <td>{{ genre.Nmovies_save }}</td>
           </tr>
           {% endfor %}
         </tbody>

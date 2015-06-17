@@ -7,6 +7,11 @@ from django.db.models import Count, Avg
 from .models import Movie, Rater, Rating, Genre
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.views.generic import View, RedirectView, ListView
+
+# for class-based
+from django.http import HttpResponse
+from django.views.generic import View
 
 # Create your views here.
 from Rater.forms import UserForm, RaterForm, RatingForm
@@ -73,11 +78,16 @@ def view_index(request):
     return render(request, "Rater/index.html", {"genres": Genre.objects.all()})
 
 def view_top20_movies(request):
-    big_movies = Movie.objects.annotate(num_ratings=Count('rating')).filter(num_ratings__gt=10)
-    movies = sorted(big_movies, key=lambda a: a.avg_rating(), reverse=True)[:20]
+    movies = Movie.objects.filter(total_save__gt=10).order_by('-avg_save')[:20]
+#    big_movies = Movie.objects.annotate(num_ratings=Count('rating')).filter(num_ratings__gt=10)
+#    movies = sorted(big_movies, key=lambda a: a.avg_rating(), reverse=True)[:20]
     return render(request,
                   "Rater/top20.html",
                   {"movies": movies})
+
+def Top20View(View):
+    def get(self, request):
+        return response
 
 
 def view_genre(request, genre_id):
