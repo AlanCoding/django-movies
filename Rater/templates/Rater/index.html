@@ -16,7 +16,7 @@
 
   <p>This is the index page. Top 20 movie link exists below, but you should
       avoid it in the live version due to lage. Same goes for genres.</p>
-  <div class="page-header"><h1>View some users</h1></div>
+  <div class="page-header"><h2>View some users</h2></div>
     <div>
       <ul>
         <li><a href="/user.html1">User number 1</a></li>
@@ -26,7 +26,8 @@
         <li><a href="/user.html6044">Clinton's page</a></li>
       </ul>
     </div>
-    <div>View some movies:
+    <div class="page-header"><h2>View some movies</h2></div>
+    <div>
       <ul>
         <li><a href="/movie.html2987">Who Framed Roger Rabbit</a></li>
         <li><a href="/movie.html3421">Animal House</a></li>
@@ -34,12 +35,30 @@
         <li><a href="/movie.html2554">Children of the Damned</a></li>
       </ul>
     </div>
-    <div>View genre pages with top-rated movies:
-      <ul>
-        {% for genre in genres %}
-          <li><a href="{% url 'view_genre' genre.id %}">{{ genre.text }}</a> genre </li>
-        {% endfor %}
-      </ul>
+    <div class="page-header"><h2>View genre pages</h2></div>
+    <div>
+      <p>contains top-rated movies in that genre</p>
+
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Genre</th>
+            <th>Number of movies in genre</th>
+            <th>Number of Ratings in genre</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for genre in genres %}
+          <tr>
+            <td><a href="{% url 'view_genre' genre.id %}">{{ genre.text }}</a></td>
+            <td>{{ genre.total_movies }}</td>
+            <td>{{ genre.total_ratings }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
     </div>
     <p>
       View the <a href="/top20.html">Top 20 rated movies</a>

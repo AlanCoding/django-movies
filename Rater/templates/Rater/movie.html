@@ -11,8 +11,7 @@
 
     <div class="jumbotron">
       <h1>Movie: {{ movie.title }}</h1>
-      <p>This is the entry for this movie.
-      </p>
+      <p>Movie page</p>
     </div>
 
     {% if request.user.is_authenticated %}
@@ -53,19 +52,34 @@
     {% for star in movie.star_hist %}
       {{star}} <br />
     {% endfor %}
-    <p><u>Reviews of this movie</u>
-    {% if ratings|length == 200 %}
+
+    <h2>Reviews of this movie</h2>
+    <p>{% if ratings|length == 200 %}
       (received over 200 ratings, only showing first 200)
-    {% endif %}
-    </p>
-    <ul>
-      {% for rating in ratings %}
-      <li><a href="{% url 'view_user' rating.rater.id %}">{{ rating.rater.user.username }} (# {{ rating.rater.id }})</a>
-            gave it {{ rating.rating }} stars, at {{ rating.print_date }}
-            {% if rating.review %}
-              , and said: {{ rating.review }}
-            {% endif %}
-            </li>
-      {% endfor %}
+    {% endif %}</p>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Rating</th>
+          <th>Date</th>
+          <th>Comments</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for rating in ratings %}
+        <tr>
+          <td><a href="{% url 'view_user' rating.rater.id %}">
+            {{ rating.rater.user.username }} (# {{ rating.rater.id }})</a></td>
+          <td>{{ rating.get_rating_display }}</td>
+          <td>{{ rating.print_date }}</td>
+          {% if rating.review %}
+          <td>{{ rating.review }}</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
 
 {% endblock %}

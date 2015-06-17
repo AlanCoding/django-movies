@@ -13,6 +13,12 @@ class Genre(models.Model):
     def total_movies(self):
         return len(self.movie_set.all())
 
+    def total_ratings(self):
+        net = 0
+        for movie in self.movie_set.all():
+            net += movie.total_ratings()
+        return net
+
     def prior_genre(self):
         i = self.id - 1
         if i < 1:

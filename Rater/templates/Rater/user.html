@@ -28,18 +28,38 @@
       <li>zip_code: {{ rater.zip_code }}</li>
     </ul>
     <p><u>Movies reviewed by this user and the ratings</u></p>
-    <ul>
-      {% for rating in ratings %}
-      <li>{% ifequal request.user.rater.id rater.id %}
-        <a href="{% url 'view_rating' rating.id %}">Edit</a>
+    
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          {% ifequal request.user.rater.id rater.id %}
+          <th>Edit</th>
+          {% else %}
+          <th>View</th>
           {% endifequal %}
-        <a href="{% url 'view_movie' rating.movie.id %}">{{ rating.movie.title }}</a>
-            rated {{ rating.rating }} stars, left at {{ rating.print_date }}
-            {% if rating.review %}
-              , and said: {{ rating.review }}
-            {% endif %}
-            </li>
-      {% endfor %}
-    </ul>
+          <th>Movie</th>
+          <th>Rating</th>
+          <th>Date</th>
+          <th>Comments</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for rating in ratings %}
+        <tr>
+          {% ifequal request.user.rater.id rater.id %}
+          <td><a href="{% url 'view_rating' rating.id %}">Edit</a></td>
+          {% else %}
+          <td><a href="{% url 'view_rating' rating.id %}">View</a></td>
+          {% endifequal %}
+          <td><a href="{% url 'view_movie' rating.movie.id %}">{{ rating.movie.title }}</a></td>
+          <td>{{ rating.get_rating_display }}</td>
+          <td>{{ rating.print_date }}</td>
+          {% if rating.review %}
+          <td>{{ rating.review }}</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
 
 {% endblock %}
