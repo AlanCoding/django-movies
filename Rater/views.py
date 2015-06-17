@@ -85,9 +85,27 @@ def view_top20_movies(request):
                   "Rater/top20.html",
                   {"movies": movies})
 
-def Top20View(View):
-    def get(self, request):
-        return response
+class Top20View(ListView):
+    template_name = 'Rater/top20.html'
+    model = Movie
+    paginate_by = 20
+    context_object_name = 'movies'
+    querryset = Movie.objects.filter(total_save__gt=10).order_by('-avg_save')
+
+#    def get_context_data(self, **kwargs):
+#        context = super(Top20View, self).get_context_data(**kwargs)
+#        context['movies'] = Movie.objects.filter(total_save__gt=10).order_by('-avg_save')
+#        return context
+
+    def get_queryset(self):
+        return self.querryset
+#        return Movie.objects.filter(total_save__gt=10).order_by('-avg_save')
+
+#    context_object_name = 'movies' # do we need these? I don't know.
+#    header = 'top_rated_movies'
+
+#    def get(self, request):
+#        return response
 
 
 def view_genre(request, genre_id):

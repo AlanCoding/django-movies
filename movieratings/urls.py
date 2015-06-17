@@ -22,7 +22,6 @@ handler404 = 'Rater.views.handler404'
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^index.html$', Rater_views.view_index, name="view_index"),
-    url(r'^top20.html$', Rater_views.view_top20_movies, name="view_top20_movies"),
     url(r'^user.html(?P<rater_id>\d+)$', Rater_views.view_user, name="view_user"),
     url(r'^movie.html(?P<movie_id>\d+)$', Rater_views.view_movie, name="view_movie"),
     url(r'^register.html$', Rater_views.view_register, name="view_register"),
@@ -32,6 +31,10 @@ urlpatterns = [
     url(r'^rating.html(?P<rating_id>\d+)$', Rater_views.view_rating, name="view_rating"),
     url(r'^dashboard.html$', Rater_views.view_dashboard, name="view_dashboard"),
     url(r'^fig(?P<movie_id>\d+).png$', Rater_views.view_fig, name="view_fig"),
+
+    url(r'^top20.html$', Rater_views.Top20View.as_view(), name="top_rated_movies"),
+    # url(r'^top20.html$', Rater_views.view_top20_movies, name="view_top20_movies"),
+    # url(r'^moviebase/best_movies$', moviebase_views.BestMoviesListView.as_view(), name="best_movies")
 #    url(r'^confused.html$', Rater_views.view_add_rating, name="view_add_rating"),
     url('^', include('django.contrib.auth.urls'))
 
