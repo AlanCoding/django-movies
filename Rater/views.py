@@ -27,6 +27,48 @@ def handler500(request):
     return response
 
 
+def view_fig(request, movie_id):
+    # inspired by: http://wiki.scipy.org/Cookbook/Matplotlib/Django
+    from random import randint
+    from django.http import HttpResponse
+
+    from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+    from matplotlib.figure import Figure
+    from matplotlib.dates import DateFormatter
+
+    movie = Movie.objects.get(pk=movie_id)
+    ratings = movie.rating_set.all().order_by('-posted')
+    fig=Figure()
+    ax=fig.add_subplot(111)
+    x=[]
+    y=[]
+    # datetime.datetime.fromtimestamp(int(self.posted))
+    # rating.posted
+    now_var = datetime.datetime.now()
+    delta = datetime.timedelta(days=1)
+    avg_span = 10
+    for i in range(len(ratings)-avg_span):
+        rating = ratings[i]
+        rsum = 0
+        for j in range(avg_span):
+            rsum += ratings[i+j].rating
+        y.append(rsum/avg_span)
+        x.append(datetime.datetime.fromtimestamp(rating.posted))
+#        x.append(rating.rater.age)
+#        y.append(rating.rating)
+    ax.plot_date(x, y, '-')
+#    ax.scatter(x, y)
+    ax.xaxis.set_major_formatter(DateFormatter('%Y-%m'))
+    fig.autofmt_xdate()
+    fig.suptitle("Ratings over time over "+str(avg_span)+" review intervals")
+    ax.set_xlabel("Year and Month", fontsize=12)
+    ax.set_ylabel("Average Rating (rolling basis)", fontsize=12)
+    canvas=FigureCanvas(fig)
+    response= HttpResponse(content_type='image/png')
+    canvas.print_png(response)
+    return response
+
+
 def view_index(request):
     return render(request, "Rater/index.html", {"genres": Genre.objects.all()})
 

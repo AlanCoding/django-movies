@@ -42,6 +42,11 @@
 
     <div class="page-header"><h2>Stats</h2></div>
 
+    {% if ratings|length > 20 %}
+    <p>Average rating evolution over time:</p>
+    <img src="{% url 'view_fig' movie.id %}" />
+    {% endif %}
+
     <ul>
       <li>average score = {{ movie.avg_rating }}</li>
       <li>has been reviewed {{ movie.total_ratings }} times</li>
