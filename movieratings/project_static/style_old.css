@@ -1,0 +1,27 @@
+
+.top_nav {
+  background-color: #ffe;
+}
+.top_nav2 {
+  margin: 20px 20px 20px 20px;
+}
+.nav {
+  background-color: #eee;
+}
+.nav2 {
+  margin: 10px 10px 10px 10px;
+  overflow:hidden;
+}
+.nav a {
+  color: #5a5a5a;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 14px 10px;
+  text-transform: uppercase;
+}
+.nav li {
+  display: inline;
+}
+body {
+    margin: 50px 40px 10px 70px;
+  }
