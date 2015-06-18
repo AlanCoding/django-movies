@@ -86,6 +86,7 @@ WSGI_APPLICATION = 'movieratings.wsgi.application'
 #print(os.environ.get('DATABASE_URL', None))
 #if os.environ.get('DATABASE_URL', None):
 import dj_database_url
+DATABASES = {}
 DATABASES['default'] = dj_database_url.config()
 #else:
     # DATABASES = {
