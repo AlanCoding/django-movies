@@ -13,7 +13,7 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import include, url
+from django.conf.urls import include, patterns, url
 from django.contrib import admin
 from Rater import views as Rater_views
 from django.conf import settings
@@ -24,6 +24,7 @@ handler404 = 'Rater.views.handler404'
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^index.html$', Rater_views.view_index, name="view_index"),
+    url(r'^$', Rater_views.view_index, name="view_index"),
 #    url(r'^user.html(?P<rater_id>\d+)$', Rater_views.view_user, name="view_user"),
     url(r'^user.html([\d]+)$', Rater_views.UserView.as_view(), name="view_user"),
 
@@ -46,3 +47,11 @@ urlpatterns = [
 
 #    url(r'^user/(?P<user_id>\d+)$', updates_views.show_user, name="show_user")
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+if settings.DEBUG:
+    urlpatterns += patterns('',
+            (r'^static/media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT, 'show_indexes':True}),
+            )
+    urlpatterns += patterns('',
+                 (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT, 'show_indexes':True}),
+                 )
