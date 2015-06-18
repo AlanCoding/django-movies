@@ -138,7 +138,6 @@ class GenreView(ListView):
         return movies
 
     def get_context_data(self, **kwargs):
-        print(kwargs)
         context = super(GenreView, self).get_context_data(**kwargs)
         context['genre'] = Genre.objects.get(pk=self.genre_id)
         return context
@@ -156,6 +155,25 @@ def view_user(request, rater_id):
     return render(request,
                   "Rater/user.html",
                   {"rater": r, "ratings": rs })
+
+
+class UserView(ListView):
+    template_name = 'Rater/user.html'
+    paginate_by = 20
+    context_object_name = 'ratings'
+    rater = None
+
+    def get_queryset(self):
+        self.rater = get_object_or_404(Rater, pk=self.args[0])
+        rs = self.rater.rating_set.order_by('-posted')
+        return rs
+
+    def get_context_data(self, **kwargs):
+        context = super(UserView, self).get_context_data(**kwargs)
+        context['rater'] = self.rater
+        return context
+
+
 
 def view_rating(request, rating_id):
     rating = Rating.objects.get(pk=rating_id)

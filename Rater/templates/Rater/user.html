@@ -1,4 +1,5 @@
 {% extends "Rater/base.html" %}
+{% load bootstrap3 %}
 
 {% block content %}
     <p>
@@ -35,6 +36,10 @@
 
     <div class="page-header"><h2>Rating History</h2></div>
 
+      {% if is_paginated %}
+        {% bootstrap_pagination page_obj %}
+      {% endif %}
+      
     <table class="table table-striped">
       <thead>
         <tr>
@@ -68,4 +73,7 @@
       </tbody>
     </table>
 
+      {% if is_paginated %}
+        {% bootstrap_pagination page_obj %}
+      {% endif %}
 {% endblock %}

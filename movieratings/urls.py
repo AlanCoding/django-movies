@@ -22,7 +22,9 @@ handler404 = 'Rater.views.handler404'
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^index.html$', Rater_views.view_index, name="view_index"),
-    url(r'^user.html(?P<rater_id>\d+)$', Rater_views.view_user, name="view_user"),
+#    url(r'^user.html(?P<rater_id>\d+)$', Rater_views.view_user, name="view_user"),
+    url(r'^user.html([\d]+)$', Rater_views.UserView.as_view(), name="view_user"),
+
     url(r'^movie.html(?P<movie_id>\d+)$', Rater_views.view_movie, name="view_movie"),
     url(r'^register.html$', Rater_views.view_register, name="view_register"),
     url(r'^logout.html$', Rater_views.view_logout, name="view_logout"),
