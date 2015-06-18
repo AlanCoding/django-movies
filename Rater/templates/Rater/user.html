@@ -12,10 +12,25 @@
       <h1>User {{ rater.user.username }}</h1>
       <p>Also known as #{{ rater.id }}, {{ rater.user.username }} has rated
           {{ rater.rating_count }} movies. I wonder if {{ rater.greeting }}
-          mouse clicking finger got tired. Ha ha. Movies subject to {{ rater.greeting }}
+          mouse clicking finger got tired. Movies subject to {{ rater.greeting }}
           wrath received an average rating of {{ rater.avg_rating }}. What a critic!
       </p>
     </div>
+
+      <div class="row">
+
+        <div class="col-sm-4">
+
+              <div class="page-header"><h2>User Stats</h2></div>
+              <p>Demographic info</p>
+          <ul>
+            <li>age: {{ rater.age }}</li>
+            <li>gender: {{ rater.get_gender_display }}</li>
+            <li>occupation: {{ rater.get_occupation_display }}</li>
+            <li>zip_code: {{ rater.zip_code }}</li>
+          </ul>
+        </div>
+        <div class="col-sm-8">
 
     <div class="page-header"><h2>Rating Histogram</h2></div>
 
@@ -26,20 +41,15 @@
     </div>
     {% endfor %}
 
-    <p>Stats on user</p>
-    <ul>
-      <li>age: {{ rater.age }}</li>
-      <li>gender: {{ rater.get_gender_display }}</li>
-      <li>occupation: {{ rater.get_occupation_display }}</li>
-      <li>zip_code: {{ rater.zip_code }}</li>
-    </ul>
+  </div>
+</div>
 
     <div class="page-header"><h2>Rating History</h2></div>
 
       {% if is_paginated %}
         {% bootstrap_pagination page_obj %}
       {% endif %}
-      
+
     <table class="table table-striped">
       <thead>
         <tr>

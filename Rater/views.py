@@ -14,7 +14,7 @@ from django.http import HttpResponse
 from django.views.generic import View
 
 # Create your views here.
-from Rater.forms import UserForm, RaterForm, RatingForm
+from Rater.forms import UserForm, RaterForm, RatingForm, LoginForm
 import datetime
 
 
@@ -123,23 +123,27 @@ class GenreView(ListView):
 #    model = Movie
     paginate_by = 20
     context_object_name = 'movies'
-    genre_id = None
     genre = None
 
-    def get_queryset(self):
-        self.genre = get_object_or_404(Genre, pk=self.args[0])
-        self.genre_id = self.genre.id
+    def dispatch(self, *args, **kwargs):
+        self.genre = Genre.objects.get(pk=self.kwargs['genre_id'])
+        return super(GenreView, self).dispatch(*args, **kwargs)
 
-        genre = Genre.objects.get(pk=self.genre_id)
-        genre_movies = genre.movie_set.filter(total_save__gt=10)
+    def get_queryset(self):
+#        tag_list = self.kwargs['tags']
+#        self.genre = Genre.objects.get(pk=self.args[0])
+#        self.genre_id = self.genre.id
+
+#        genre = Genre.objects.get(pk=self.genre_id)
+#        genre_movies = self.genre.movie_set.filter(total_save__gt=10)
 #        big_movies = genre_movies.annotate(num_ratings=Count('rating')).filter(num_ratings__gt=10)
-        movies = genre_movies.order_by('-avg_save')
+#        movies = genre_movies.order_by('-avg_save')
 #        movies = sorted(big_movies, key=lambda a: a.avg_rating(), reverse=True)
-        return movies
+        return self.genre.movie_set.filter(total_save__gt=10).order_by('-avg_save')
 
     def get_context_data(self, **kwargs):
         context = super(GenreView, self).get_context_data(**kwargs)
-        context['genre'] = Genre.objects.get(pk=self.genre_id)
+        context['genre'] = self.genre
         return context
     #
     # def get(self, request):
@@ -179,11 +183,13 @@ def view_rating(request, rating_id):
     rating = Rating.objects.get(pk=rating_id)
     if request.method == "POST":
         rating_form = RatingForm(request.POST)
+        old_rating = rating.rating
         new_rating = request.POST.get('rating')
         new_review = request.POST.get('review')
         rating.review = str(new_review)
         rating.rating = int(new_rating)
         rating.save()
+        rating.movie.update_store(new_rating, old_rating)
         sometext = "You have updated your rating"
         messages.add_message(request, messages.SUCCESS, sometext)
         return redirect('user.html'+ str(rating.rater.id))
@@ -192,7 +198,6 @@ def view_rating(request, rating_id):
                                     "review":rating.review})
         return render(request, "Rater/rating.html",
                     {"rating": rating, "rating_form": rating_form})
-
 
 
 def view_movie(request, movie_id):
@@ -208,6 +213,7 @@ def view_movie(request, movie_id):
         post_int = (dt_now - datetime.datetime(1970, 1, 1)).total_seconds()
         r.posted = post_int
         r.save()
+        movie.update_store(new_rating)
         sometext = "You have rated this movie {} stars, ".format(new_rating)
         sometext += "{}.".format(user.username)
         messages.add_message(request, messages.SUCCESS, sometext)
@@ -230,20 +236,21 @@ def view_movie(request, movie_id):
 
 
 def view_login(request):
-	if request.method == "POST":
-		username = request.POST.get('username')
-		password = request.POST.get('password')
-		user = authenticate(username=username, password=password)
-		if user is not None and user.is_active:
-			login(request, user)
-			sometext = "You have sucessfully logged in, {}!".format(user.username)
-			messages.add_message(request, messages.SUCCESS, sometext)
-			return redirect('index')
-		else:
-			return render(request, "Rater/login.html",
-						{"failed": True, "username": username} )
-	else:
-		return render(request, "Rater/login.html")
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user is not None and user.is_active:
+            login(request, user)
+            sometext = "You have sucessfully logged in, {}!".format(user.username)
+            messages.add_message(request, messages.SUCCESS, sometext)
+            return redirect('index')
+        else:
+            return render(request, "Rater/login.html",
+                        {"failed": True, "username": username} )
+    else:
+        user_form = LoginForm()
+        return render(request, "Rater/login.html", {'form':user_form})
 
 
 def view_logout(request):
@@ -313,7 +320,6 @@ def view_dashboard(request):
             idx = int(request.POST.get('rating'))
             rating = Rating.objects.get(pk=idx)
             sometext = "Sucessfully deleted rating of {}".format(rating.movie.title)
-            print(idx)
             Rating.objects.get(pk=idx).delete()
             messages.add_message(request, messages.SUCCESS, sometext)
 

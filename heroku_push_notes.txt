@@ -1,0 +1,12 @@
+heroku maintenance:on
+heroku ps:scale worker=0
+
+
+local name: pdb
+remote name:
+  Heroku Postgres :: Cyan
+speculative:
+  HEROKU_POSTGRESQL_CYAN
+
+example:
+  HEROKU_POSTGRESQL_RED

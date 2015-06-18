@@ -19,3 +19,8 @@ class RatingForm(forms.ModelForm):
     class Meta:
         model = Rating
         fields = ('rating', 'review',)
+
+class LoginForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('username', 'password')

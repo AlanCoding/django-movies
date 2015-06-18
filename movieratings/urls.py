@@ -16,6 +16,8 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from Rater import views as Rater_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 handler404 = 'Rater.views.handler404'
 
@@ -35,7 +37,7 @@ urlpatterns = [
 
 #url(r'^genre.html(?P<genre_id>\d+)$', Rater_views.view_genre, name="view_genre"),
 #    url(r'^genre.html(?P<genre_id>\d+)$', Rater_views.GenreView.as_view(), name="view_genre"),
-    url(r'^genre.html([\d]+)$', Rater_views.GenreView.as_view(), name="view_genre"),
+    url(r'^genre.html(?P<genre_id>\d+)$', Rater_views.GenreView.as_view(), name="view_genre"),
     url(r'^top20.html$', Rater_views.Top20View.as_view(), name="top_rated_movies"),
     # url(r'^top20.html$', Rater_views.view_top20_movies, name="view_top20_movies"),
     # url(r'^moviebase/best_movies$', moviebase_views.BestMoviesListView.as_view(), name="best_movies")
@@ -43,4 +45,4 @@ urlpatterns = [
     url('^', include('django.contrib.auth.urls'))
 
 #    url(r'^user/(?P<user_id>\d+)$', updates_views.show_user, name="show_user")
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

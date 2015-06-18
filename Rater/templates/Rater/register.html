@@ -2,6 +2,9 @@
 {% load bootstrap3 %}
 
 {% block content %}
+
+<center>
+  <div style="width:50%;">
     <h2>Register</h2>
 
     <form method="POST" action="{% url 'view_register' %}">
@@ -12,4 +15,6 @@
         <!-- Provide a button to click to submit the form. -->
         <input type="submit" name="submit" value="Register"/>
     </form>
+  </div>
+</center>
 {% endblock %}

@@ -161,6 +161,24 @@ class Movie(models.Model):
     avg_save = models.FloatField(null=True)
     total_save = models.IntegerField(null=True)
 
+    def update_store(self, star, old_star=None):
+        star_ct = self.avg_save*self.total_save + int(star)
+        if old_star is None:
+            for g in self.genre.all():
+                g.Nratings_save += 1
+                g.save()
+            self.total_save += 1
+        else:
+            star_ct -= int(old_star)
+        self.avg_save = star_ct / self.total_save
+        self.save()
+
+    def update_delete(self, star):
+        star_ct = self.avg_save*self.total_save - int(star)
+        self.total_save -= 1
+        self.avg_save = star_ct / self.total_save
+        self.save()
+
     def avg_rating(self):
         r_set = self.rating_set.all()
         if len(r_set) == 0:

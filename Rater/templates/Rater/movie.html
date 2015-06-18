@@ -15,15 +15,20 @@
       <p>Movie page</p>
     </div>
 
+
+      <div class="row">
+        <div class="col-sm-4">
+
     {% if request.user.is_authenticated %}
-    <p>You have special privledges on this page, {{ request.user.username }}.</p>
+      <div class="page-header"><h2>Your Rating</h2></div>
       {% if user_rate %}
+
         <p>You have rated this movie!</p>
+
       {% else %}
         {% if request.user.is_authenticated %}
           <p>You have not rated this movie</p>
           <p>
-
             <form method="POST" action="{% url 'view_movie' movie.id %}">
                 {% csrf_token %}
                 {% bootstrap_form rating_form %}
@@ -36,32 +41,45 @@
       {% endif %}
     {% endif %}
 
-    <div class="page-header"><h2>Stats</h2></div>
+  </div><div class="col-sm-8">
 
-    {% if ratings|length > 20 %}
-    <p>Average rating evolution over time:</p>
-    <img src="{% url 'view_fig' movie.id %}" />
-    {% endif %}
+      <div class="page-header"><h2>Histogram of Ratings</h2></div>
+      {% for n_star in movie.star_numbs %}
+      <div style="float:left;width:50px;">&nbsp;{{ n_star.text }}</div>
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="{{ n_star.val }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ n_star.val }}%;"><span class="sr-only">{{ n_star }}</span></div>
+      </div>
+      {% endfor %}
 
-    <ul>
-      <li>average score = {{ movie.avg_rating }}</li>
-      <li>has been reviewed {{ movie.total_ratings }} times</li>
-    </ul>
-    <p>Genres:</p>
+    </div>
+
+      <div style="clear:left;"></div>
+
+    <div class="col-sm-4">
+      <div class="page-header"><h2>Movie Genres</h2></div>
     <ul>
       {% for gen in movie.genre.all %}
         <li><a href="{% url 'view_genre' gen.id %}">{{ gen.text }}</a></li>
       {% endfor %}
     </ul>
-
-    <p>Histogram of ratings recieved:</p>
-    {% for n_star in movie.star_numbs %}
-    <div style="float:left;width:50px;">&nbsp;{{ n_star.text }}</div>
-
-    <div class="progress">
-      <div class="progress-bar" role="progressbar" aria-valuenow="{{ n_star.val }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ n_star.val }}%;"><span class="sr-only">{{ n_star }}</span></div>
+      <div class="page-header"><h2>Movie Info</h2></div>
+    <ul>
+      <li>average score = {{ movie.avg_rating }}</li>
+      <li>has been reviewed {{ movie.total_ratings }} times</li>
+    </ul>
     </div>
-    {% endfor %}
+
+    {% if ratings|length > 20 %}
+    <div class="col-sm-8">
+    <div class="page-header"><h2>Raing over Time</h2></div>
+    <p>Average rating evolution over time:</p>
+    <img src="{% url 'view_fig' movie.id %}" />
+    </div>
+    {% endif %}
+
+
+    <div class="clearfix visible-sm"></div>
+  </div>
 
     <div class="page-header"><h2>Reviews of {{ movie.title }}</h2></div>
 
