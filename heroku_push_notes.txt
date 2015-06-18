@@ -1,5 +1,6 @@
 heroku maintenance:on
-heroku ps:scale worker=0
+heroku ps:scale worker=0 -- probably not necessary
+heroku ps:scale web=0 --> from tutorial
 
 
 local name: pdb
@@ -15,6 +16,9 @@ example:
 transfer to new db:
 heroku pg:copy DATABASE_URL HEROKU_POSTGRESQL_PINK --app sushi
 
+customized:
+heroku pg:copy pdb HEROKU_POSTGRESQL_CYAN --app nameless-mountain-9760
+
 heroku pg:promote HEROKU_POSTGRESQL_PINK
 
 heroku ps:scale worker=1
@@ -26,4 +30,20 @@ other page
 heroku pg:backups capture
 curl -o latest.dump `heroku pg:backups public-url`
 
- 
+app name
+nameless-mountain-9760
+
+ -----
+ from tutorial
+
+ git push heroku master
+ heroku logs --tail
+
+
+
+ DATABASE CREATION LOGS
+
+2015-06-17T19:08:50.820911+00:00 heroku[api]: Attach HEROKU_POSTGRESQL_CYAN resource by alan.rominger@gmail.com
+2015-06-17T19:08:50.820911+00:00 heroku[api]: Release v10 created by alan.rominger@gmail.com
+2015-06-17T19:08:58.951236+00:00 heroku[api]: Detach DATABASE (@ref:rolling-purely-9173) by alan.rominger@gmail.com
+2015-06-17T19:08:58.951236+00:00 heroku[api]: Release v11 created by alan.rominger@gmail.com
