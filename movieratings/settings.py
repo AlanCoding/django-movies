@@ -82,15 +82,21 @@ WSGI_APPLICATION = 'movieratings.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'pdb',
-        'USER': 'pdb',
-        'HOST': '127.0.0.1'
-#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    },
-}
+# Parse database configuration from $DATABASE_URL
+#print(os.environ.get('DATABASE_URL', None))
+#if os.environ.get('DATABASE_URL', None):
+import dj_database_url
+DATABASES['default'] = dj_database_url.config()
+#else:
+    # DATABASES = {
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #         'NAME': 'pdb',
+    #         'USER': 'pdb',
+    #         'HOST': '127.0.0.1'
+    # #        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    #     },
+    # }
 
 
 # Database
@@ -156,10 +162,6 @@ ADMINS = (
     ('Alan Rominger', 'alan.rominger@gmail.com')
 )
 
-# Parse database configuration from $DATABASE_URL
-if os.environ.get('DATABASE_URL', None):
-    import dj_database_url
-    DATABASES['default'] = dj_database_url.config()
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
