@@ -268,15 +268,11 @@ def update_custom_cache():
     print('filling movie values...')
     for m in Movie.objects.all():
         m.avg_save = m.avg_rating()
-        #print(' - rating avg finished')
         m.total_save = m.total_ratings()
-        #print(' - rating total finished')
         m.save()
     print('filling genre values...')
     for g in Genre.objects.all():
         g.Nmovies_save = g.total_movies()
-        #print(' - total movies finished')
         g.Nratings_save = g.total_ratings()
-        #print(' - total ratings finished')
         g.save()
     print('finished')

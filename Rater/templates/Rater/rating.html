@@ -1,4 +1,5 @@
 {% extends "Rater/base.html" %}
+{% load bootstrap3 %}
 
 {% block content %}
 
@@ -6,11 +7,7 @@
     {% ifequal rating.rater.user.id request.user.id %}
       <form method="POST" action="{% url 'view_rating' rating.id %}">
             {% csrf_token %}
-        <table>
-        <tr>
-            <td>{{ rating_form.as_p }}</td>
-        </tr>
-        </table>
+            {% bootstrap_form rating_form %}
           <input type="submit" name="submit" value="Update your Rating"/>
       </form>
     {% else %}

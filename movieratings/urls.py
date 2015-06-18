@@ -27,11 +27,13 @@ urlpatterns = [
     url(r'^register.html$', Rater_views.view_register, name="view_register"),
     url(r'^logout.html$', Rater_views.view_logout, name="view_logout"),
     url(r'^login.html$', Rater_views.view_login, name="view_login"),
-    url(r'^genre.html(?P<genre_id>\d+)$', Rater_views.view_genre, name="view_genre"),
     url(r'^rating.html(?P<rating_id>\d+)$', Rater_views.view_rating, name="view_rating"),
     url(r'^dashboard.html$', Rater_views.view_dashboard, name="view_dashboard"),
     url(r'^fig(?P<movie_id>\d+).png$', Rater_views.view_fig, name="view_fig"),
 
+#url(r'^genre.html(?P<genre_id>\d+)$', Rater_views.view_genre, name="view_genre"),
+#    url(r'^genre.html(?P<genre_id>\d+)$', Rater_views.GenreView.as_view(), name="view_genre"),
+    url(r'^genre.html([\d]+)$', Rater_views.GenreView.as_view(), name="view_genre"),
     url(r'^top20.html$', Rater_views.Top20View.as_view(), name="top_rated_movies"),
     # url(r'^top20.html$', Rater_views.view_top20_movies, name="view_top20_movies"),
     # url(r'^moviebase/best_movies$', moviebase_views.BestMoviesListView.as_view(), name="best_movies")

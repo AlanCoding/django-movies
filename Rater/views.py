@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, render_to_response
+from django.shortcuts import render, redirect, render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 
@@ -85,21 +85,21 @@ def view_top20_movies(request):
                   "Rater/top20.html",
                   {"movies": movies})
 
+
 class Top20View(ListView):
     template_name = 'Rater/top20.html'
-    model = Movie
+    model = Movie # I think this might be why it wanted to sort by id #
     paginate_by = 20
     context_object_name = 'movies'
     querryset = Movie.objects.filter(total_save__gt=10).order_by('-avg_save')
+
+    def get_queryset(self):
+        return self.querryset
 
 #    def get_context_data(self, **kwargs):
 #        context = super(Top20View, self).get_context_data(**kwargs)
 #        context['movies'] = Movie.objects.filter(total_save__gt=10).order_by('-avg_save')
 #        return context
-
-    def get_queryset(self):
-        return self.querryset
-#        return Movie.objects.filter(total_save__gt=10).order_by('-avg_save')
 
 #    context_object_name = 'movies' # do we need these? I don't know.
 #    header = 'top_rated_movies'
@@ -116,6 +116,39 @@ def view_genre(request, genre_id):
     return render(request,
                     "Rater/genre.html",
                     {"genre": genre, "movies": movies})
+
+
+class GenreView(ListView):
+    template_name = 'Rater/genre.html'
+#    model = Movie
+    paginate_by = 20
+    context_object_name = 'movies'
+    genre_id = None
+    genre = None
+
+    def get_queryset(self):
+        self.genre = get_object_or_404(Genre, pk=self.args[0])
+        self.genre_id = self.genre.id
+
+        genre = Genre.objects.get(pk=self.genre_id)
+        genre_movies = genre.movie_set.filter(total_save__gt=10)
+#        big_movies = genre_movies.annotate(num_ratings=Count('rating')).filter(num_ratings__gt=10)
+        movies = genre_movies.order_by('-avg_save')
+#        movies = sorted(big_movies, key=lambda a: a.avg_rating(), reverse=True)
+        return movies
+
+    def get_context_data(self, **kwargs):
+        print(kwargs)
+        context = super(GenreView, self).get_context_data(**kwargs)
+        context['genre'] = Genre.objects.get(pk=self.genre_id)
+        return context
+    #
+    # def get(self, request):
+    #     self.genre = Genre.objects.get(pk=self.genre_id)
+    #     movies = self.get_queryset(genre_id)
+    #     return render(request, "Rater/genre.html",
+    #             {"genre":self.genre, "movies":movies})
+
 
 def view_user(request, rater_id):
     r = Rater.objects.get(pk=rater_id)
