@@ -11,7 +11,6 @@ from django.views.generic import View, RedirectView, ListView
 
 # for class-based
 from django.http import HttpResponse
-from django.views.generic import View
 
 # Create your views here.
 from Rater.forms import UserForm, RaterForm, RatingForm, LoginForm

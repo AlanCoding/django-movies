@@ -15,14 +15,18 @@ example:
 ----------
 transfer to new db:
 heroku pg:copy DATABASE_URL HEROKU_POSTGRESQL_PINK --app sushi
+heroku pg:push mylocaldb HEROKU_POSTGRESQL_MAGENTA --app sushi
 
 customized:
 heroku pg:copy pdb HEROKU_POSTGRESQL_CYAN --app nameless-mountain-9760
+heroku pg:push pdb HEROKU_POSTGRESQL_CYAN --app nameless-mountain-9760
 
 heroku pg:promote HEROKU_POSTGRESQL_PINK
 
 heroku ps:scale worker=1
 heroku maintenance:off
+
+https://devcenter.heroku.com/articles/getting-started-with-django
 
 --------
 other page
@@ -38,6 +42,7 @@ nameless-mountain-9760
 
  git push heroku master
  heroku logs --tail
+ heroku ps
 
 
 
